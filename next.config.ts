@@ -3,12 +3,7 @@ import type { NextConfig } from "next";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'blob',
-        hostname: '**',
-      },
-    ],
+    unoptimized: true,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if

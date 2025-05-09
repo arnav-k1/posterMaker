@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
 
 interface ImageUploadProps {
   onImageUpload: (file: File) => void;
@@ -47,11 +48,13 @@ export default function ImageUpload({ onImageUpload }: ImageUploadProps) {
       {previewUrl && (
         <div className="mt-4">
           <p className="text-sm text-green-600 mb-2">✓ Image uploaded successfully!</p>
-          <div className="max-w-md mx-auto">
-            <img
+          <div className="max-w-md mx-auto relative h-[300px]">
+            <Image
               src={previewUrl}
               alt="Uploaded preview"
-              className="max-w-full h-auto rounded-lg shadow-md"
+              fill
+              style={{ objectFit: 'contain' }}
+              className="rounded-lg shadow-md"
             />
           </div>
         </div>

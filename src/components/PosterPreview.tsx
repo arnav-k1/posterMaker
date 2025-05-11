@@ -16,26 +16,14 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
   const [savedImage, setSavedImage] = useState<string | null>(null);
   const [downloadComplete, setDownloadComplete] = useState(false);
   const [fileName, setFileName] = useState('poster');
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Check if device is mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Convert inches to pixels (assuming 100 DPI)
   const inchesToPixels = (inches: number) => inches * 100;
 
   useEffect(() => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
-    
     img.onload = () => {
+      // Draw the image on the main canvas
       const canvas = canvasRef.current;
       if (!canvas) return;
 
@@ -43,11 +31,8 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
       if (!ctx) return;
 
       // Set canvas size to match the poster dimensions in pixels
-      const maxWidth = isMobile ? window.innerWidth - 32 : 800; // Adjust for mobile
-      const scale = Math.min(1, maxWidth / inchesToPixels(dimensions.width));
-      
-      canvas.width = inchesToPixels(dimensions.width) * scale;
-      canvas.height = inchesToPixels(dimensions.height) * scale;
+      canvas.width = inchesToPixels(dimensions.width);
+      canvas.height = inchesToPixels(dimensions.height);
 
       // Draw the image
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -74,26 +59,21 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
       // Draw vertical lines
       for (let x = 0; x < dimensions.width; x += a4Width) {
         gridCtx.beginPath();
-        gridCtx.moveTo(inchesToPixels(x) * scale, 0);
-        gridCtx.lineTo(inchesToPixels(x) * scale, gridCanvas.height);
+        gridCtx.moveTo(inchesToPixels(x), 0);
+        gridCtx.lineTo(inchesToPixels(x), gridCanvas.height);
         gridCtx.stroke();
       }
 
       // Draw horizontal lines
       for (let y = 0; y < dimensions.height; y += a4Height) {
         gridCtx.beginPath();
-        gridCtx.moveTo(0, inchesToPixels(y) * scale);
-        gridCtx.lineTo(gridCanvas.width, inchesToPixels(y) * scale);
+        gridCtx.moveTo(0, inchesToPixels(y));
+        gridCtx.lineTo(gridCanvas.width, inchesToPixels(y));
         gridCtx.stroke();
       }
     };
-
-    img.onerror = (e) => {
-      console.error('Error loading image:', e);
-    };
-
     img.src = imageUrl;
-  }, [imageUrl, dimensions, isMobile]);
+  }, [imageUrl, dimensions]);
 
   const handleSaveImage = () => {
     const canvas = canvasRef.current;
@@ -205,18 +185,16 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold">Poster Preview</h2>
       <div className="border rounded-lg p-4 overflow-auto relative">
-        <div className="relative" style={{ maxWidth: '100%', overflow: 'auto' }}>
-          <canvas
-            ref={canvasRef}
-            className="max-w-full h-auto"
-            style={{ border: '1px solid #ccc' }}
-          />
-          <canvas
-            ref={gridCanvasRef}
-            className="absolute top-0 left-0 max-w-full h-auto pointer-events-none"
-            style={{ border: '1px solid #ccc' }}
-          />
-        </div>
+        <canvas
+          ref={canvasRef}
+          className="max-w-full h-auto"
+          style={{ border: '1px solid #ccc' }}
+        />
+        <canvas
+          ref={gridCanvasRef}
+          className="absolute top-0 left-0 max-w-full h-auto pointer-events-none"
+          style={{ border: '1px solid #ccc' }}
+        />
       </div>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row gap-4 items-center">

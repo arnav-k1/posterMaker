@@ -54,12 +54,12 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
       gridCtx.strokeStyle = 'rgba(255, 0, 0, 0.8)'; // Increased opacity
       gridCtx.lineWidth = 3; // Increased line width
 
-      // A4 dimensions in inches
-      const a4Width = 8.27; // 210mm
-      const a4Height = 11.69; // 297mm
+      // Letter dimensions in inches
+      const letterWidth = 8.5; // Letter width
+      const letterHeight = 11; // Letter height
 
       // Draw vertical lines
-      for (let x = 0; x < dimensions.width; x += a4Width) {
+      for (let x = 0; x < dimensions.width; x += letterWidth) {
         gridCtx.beginPath();
         gridCtx.moveTo(inchesToPixels(x), 0);
         gridCtx.lineTo(inchesToPixels(x), gridCanvas.height);
@@ -67,7 +67,7 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
       }
 
       // Draw horizontal lines
-      for (let y = 0; y < dimensions.height; y += a4Height) {
+      for (let y = 0; y < dimensions.height; y += letterHeight) {
         gridCtx.beginPath();
         gridCtx.moveTo(0, inchesToPixels(y));
         gridCtx.lineTo(gridCanvas.width, inchesToPixels(y));
@@ -94,25 +94,25 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // A4 dimensions in inches
-    const a4Width = 8.27;
-    const a4Height = 11.69;
+    // Letter dimensions in inches
+    const letterWidth = 8.5;
+    const letterHeight = 11;
 
     // Calculate number of pages needed
-    const totalPagesX = Math.ceil(dimensions.width / a4Width);
-    const totalPagesY = Math.ceil(dimensions.height / a4Height);
+    const totalPagesX = Math.ceil(dimensions.width / letterWidth);
+    const totalPagesY = Math.ceil(dimensions.height / letterHeight);
 
     // Create a new PDF
-    const pdf = new jsPDF('p', 'in', 'a4');
+    const pdf = new jsPDF('p', 'in', 'letter');
 
     // Create a temporary canvas for each page
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
     if (!tempCtx) return;
 
-    // Set temporary canvas size to A4 dimensions in pixels
-    tempCanvas.width = inchesToPixels(a4Width);
-    tempCanvas.height = inchesToPixels(a4Height);
+    // Set temporary canvas size to Letter dimensions in pixels
+    tempCanvas.width = inchesToPixels(letterWidth);
+    tempCanvas.height = inchesToPixels(letterHeight);
 
     for (let y = 0; y < totalPagesY; y++) {
       for (let x = 0; x < totalPagesX; x++) {
@@ -121,14 +121,14 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
         tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
 
         // Calculate the source rectangle
-        const sourceX = x * inchesToPixels(a4Width);
-        const sourceY = y * inchesToPixels(a4Height);
+        const sourceX = x * inchesToPixels(letterWidth);
+        const sourceY = y * inchesToPixels(letterHeight);
         const sourceWidth = Math.min(
-          inchesToPixels(a4Width),
+          inchesToPixels(letterWidth),
           inchesToPixels(dimensions.width) - sourceX
         );
         const sourceHeight = Math.min(
-          inchesToPixels(a4Height),
+          inchesToPixels(letterHeight),
           inchesToPixels(dimensions.height) - sourceY
         );
 
@@ -165,10 +165,10 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
 
         // Add the image to the PDF
         if (x === 0 && y === 0) {
-          pdf.addImage(imgData, 'JPEG', 0, 0, a4Width, a4Height);
+          pdf.addImage(imgData, 'JPEG', 0, 0, letterWidth, letterHeight);
         } else {
           pdf.addPage();
-          pdf.addImage(imgData, 'JPEG', 0, 0, a4Width, a4Height);
+          pdf.addImage(imgData, 'JPEG', 0, 0, letterWidth, letterHeight);
         }
       }
     }

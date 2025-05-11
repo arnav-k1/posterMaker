@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const nextConfig = {
   images: {
     unoptimized: true,
+    domains: ['*'],
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if

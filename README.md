@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Poster Maker
+
+A web application that allows users to upload images and split them into A4-sized pieces for poster printing. Perfect for creating large posters from regular printer paper.
+
+## Features
+
+- 🖼**Image Upload**: Drag and drop or click to upload images
+- **Custom Dimensions**: Input desired poster size in inches
+- **Grid Preview**: Visual guide showing how the poster will be split
+- **PDF Generation**: Creates properly scaled PDF pages
+- **Easy Assembly**: Images positioned for minimal cutting
+- **Custom Naming**: Name your PDF files
+- **Download Confirmation**: Visual feedback when download is complete
+
+## Tech Stack
+
+- **Frontend**: Next.js, React, TypeScript
+- **Styling**: Tailwind CSS
+- **PDF Generation**: jsPDF
+- **File Handling**: react-dropzone
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/arnav-k1/posterMaker.git
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Install dependencies**
+   ```bash
+   cd postermaker
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Open [http://localhost:3000](http://localhost:3000) in your browser**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage
 
-## Learn More
+1. Upload an image by dragging and dropping or clicking to select
+2. Enter the desired dimensions in inches
+3. Preview how the poster will be split into A4 pages
+4. Enter a custom filename (optional)
+5. Download the PDF
+6. Print the pages
+7. Cut and assemble the poster
 
-To learn more about Next.js, take a look at the following resources:
+## Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm start`: Start production server
+- `npm run lint`: Run ESLint
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+The application is automatically deployed to Vercel when changes are pushed to the main branch.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you find this tool useful, consider buying me a chocolate milk:
+- Venmo: @arnav-k
+
+## Acknowledgments
+
+- Next.js team for the amazing framework
+- Vercel for the deployment platform
+- All the open-source libraries that made this possible

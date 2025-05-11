@@ -109,8 +109,16 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
   };
 
   const handleDownload = async () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Create a new image to ensure it's loaded
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    
+    // Wait for the image to load
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = imageUrl;
+    });
 
     // A4 dimensions in inches
     const a4Width = 8.27;
@@ -138,7 +146,7 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
         tempCtx.fillStyle = 'white';
         tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
 
-        // Calculate the source rectangle
+        // Calculate the source rectangle in original image coordinates
         const sourceX = x * inchesToPixels(a4Width);
         const sourceY = y * inchesToPixels(a4Height);
         const sourceWidth = Math.min(
@@ -167,7 +175,7 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
 
         // Draw the portion of the image to the temporary canvas
         tempCtx.drawImage(
-          canvas,
+          img,  // Use the original image instead of the canvas
           sourceX,
           sourceY,
           sourceWidth,

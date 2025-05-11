@@ -48,13 +48,11 @@ export default function ImageUpload({ onImageUpload }: ImageUploadProps) {
       {previewUrl && (
         <div className="mt-4">
           <p className="text-sm text-green-600 mb-2">✓ Image uploaded successfully!</p>
-          <div className="max-w-md mx-auto relative h-[300px]">
-            <Image
+          <div className="max-w-xs mx-auto">
+            <img
               src={previewUrl}
               alt="Uploaded preview"
-              fill
-              style={{ objectFit: 'contain' }}
-              className="rounded-lg shadow-md"
+              className="max-w-full h-auto rounded-lg shadow-md"
             />
           </div>
         </div>

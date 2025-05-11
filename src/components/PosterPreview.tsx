@@ -14,6 +14,8 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gridCanvasRef = useRef<HTMLCanvasElement>(null);
   const [savedImage, setSavedImage] = useState<string | null>(null);
+  const [downloadComplete, setDownloadComplete] = useState(false);
+  const [fileName, setFileName] = useState('poster');
 
   // Convert inches to pixels (assuming 100 DPI)
   const inchesToPixels = (inches: number) => inches * 100;
@@ -139,8 +141,8 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
           destWidth = tempCanvas.height * aspectRatio;
         }
 
-        // Center the image on the page
-        const destX = (tempCanvas.width - destWidth) / 2;
+        // Position the image on the left side of the page
+        const destX = 0;
         const destY = (tempCanvas.height - destHeight) / 2;
 
         // Draw the portion of the image to the temporary canvas
@@ -170,7 +172,13 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
     }
 
     // Save the PDF
-    pdf.save('poster.pdf');
+    pdf.save(`${fileName}.pdf`);
+    setDownloadComplete(true);
+    
+    // Reset the download complete message after 3 seconds
+    setTimeout(() => {
+      setDownloadComplete(false);
+    }, 3000);
   };
 
   return (
@@ -188,27 +196,31 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
           style={{ border: '1px solid #ccc' }}
         />
       </div>
-      <div className="flex gap-4">
-        <button
-          onClick={handleSaveImage}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
-        >
-          Save Image Template
-        </button>
-        <button
-          onClick={handleDownload}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          Download PDF
-        </button>
-      </div>
-      {savedImage && (
-        <div className="mt-4">
-          <p className="text-sm text-gray-600">
-            Image template saved! You can use this to make adjustments and download again.
-          </p>
+      <div className="space-y-4">
+        <div className="flex gap-4 items-center">
+          <input
+            type="text"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+            placeholder="Enter file name"
+            className="p-2 border rounded flex-grow"
+          />
+          <button
+            onClick={handleDownload}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Download PDF
+          </button>
         </div>
-      )}
+        {downloadComplete && (
+          <div className="text-green-600 flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            PDF downloaded successfully!
+          </div>
+        )}
+      </div>
     </div>
   );
 }

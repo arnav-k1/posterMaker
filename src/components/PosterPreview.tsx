@@ -23,7 +23,6 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
-      // Draw the image on the main canvas
       const canvas = canvasRef.current;
       if (!canvas) return;
 
@@ -48,9 +47,12 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
       gridCanvas.width = canvas.width;
       gridCanvas.height = canvas.height;
 
-      // Draw grid lines
-      gridCtx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-      gridCtx.lineWidth = 2;
+      // Clear the grid canvas first
+      gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+
+      // Draw grid lines with increased opacity and line width
+      gridCtx.strokeStyle = 'rgba(255, 0, 0, 0.8)'; // Increased opacity
+      gridCtx.lineWidth = 3; // Increased line width
 
       // A4 dimensions in inches
       const a4Width = 8.27; // 210mm
@@ -141,9 +143,9 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
           destWidth = tempCanvas.height * aspectRatio;
         }
 
-        // Center the image on the page
-        const destX = (tempCanvas.width - destWidth) / 2;
-        const destY = (tempCanvas.height - destHeight) / 2;
+        // Position the image at the top-left of the page
+        const destX = 0;
+        const destY = 0;
 
         // Draw the portion of the image to the temporary canvas
         tempCtx.drawImage(

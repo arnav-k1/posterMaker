@@ -162,8 +162,8 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
         }
 
         // Position the image at the top-left of the page
-        const destX = 0;  // Align to left
-        const destY = 0;  // Align to top
+        const destX = 0;
+        const destY = 0;
 
         // Draw the portion of the image to the temporary canvas
         tempCtx.drawImage(

@@ -112,10 +112,6 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Ensure the canvas has content
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
     // A4 dimensions in inches
     const a4Width = 8.27;
     const a4Height = 11.69;
@@ -168,9 +164,6 @@ export default function PosterPreview({ imageUrl, dimensions }: PosterPreviewPro
         // Position the image at the top-left of the page
         const destX = 0;
         const destY = 0;
-
-        // Clear the temporary canvas before drawing
-        tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
 
         // Draw the portion of the image to the temporary canvas
         tempCtx.drawImage(
